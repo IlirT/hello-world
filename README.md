@@ -17,7 +17,7 @@ The leg_tracker package can be found on the following github repository: https:/
 
 Additionaly, a conference paper can be found in the leg_tracker package. For the sake of completion, we stated the paper on this page again: 
 
-Leigh, Angus. Person Tracking and Following with 2D Laser Scanners. IEEE International Conference on Robotics and Automation. Seattle, 2015.
+[1] Leigh, Angus. Person Tracking and Following with 2D Laser Scanners. IEEE International Conference on Robotics and Automation. Seattle, 2015.
 
 Requirements:
 --------------------
@@ -32,7 +32,7 @@ In order to run the leg_tracker the following packages/installations are require
 Demonstration:
 --------------------
 
-After installing all dependencies and compiling the leg_tracker (catkin_make) it be run with the command: roslaunch leg_tracker joint_leg_tracker.launch
+After installing all dependencies and compiling the leg_tracker (catkin_make) it be run with the command: roslaunch leg_tracker joint_leg_tracker.launch.
 To only work on the leg_tracker there exist three demo files in the launch directory of the leg_tracker
 
 
@@ -42,8 +42,8 @@ Executables:
 In the src/ directory, the following executables can be found: 
 
 
-- laser_processor.cpp: This node processes the laser scan data by creating the scan clusters and publishes them on the XY topic 
-- cluster_features.cpp: This node subscribes the XY topic and calculates the features of the clusters: see Paper for more informations on the features
+- laser_processor.cpp: This node processes the laser scan data by creating the scan clusters 
+- cluster_features.cpp: This node calculates the features of the clusters: see [1] for more informations on the features
 - detect_leg_clusters.cpp: This node uses cluster_features.cpp and detects the leg_clusters. The node publishes to /detected_leg_clusters topic
 - train_leg_detector.cpp: This node can be used to train the forest tree model if the setup changes and the performance of the leg_detection decreases
 
@@ -64,18 +64,6 @@ The leg_tracker requires two topics in order to work properly (Subscription):
 Publish: 
 
 - /people_tracked: The joint_leg_tracker node publishes the position and orientation of the tracked people on this topic
-
-
-Msgs:
---------------------
-
-What are the message types?
-Give links to the documentation of the message packages 
-
-leg_tracker:
---------------------
-
-include a picture of the running leg_tracker 
 
 
 Human Follower
