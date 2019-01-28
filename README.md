@@ -9,7 +9,15 @@ Leg Tracker
 Description:
 --------------------
 
-Show the git source and the corresponding paper 
+This leg tracker package is used to detect human legs and track them in case it is classified as a human. Based on geometric features and using Random Forest Trees as a classification method, leg clusters, obtained from the scan data, are classified as human or non-human. The random forest classifier is trained on 1700 human and 4500 non-human examples. Autonomous tracking of multiple people is performed by a multi-target Kalman Filter. Further, the global nearest neighbor method is used for the data association. 
+
+In the human following context, the leg_tracker provides the position and orientation of a human, walking in sight of the robot. With that information, the robot continuously updates the navigation goal associated with the human position. 
+
+The leg_tracker package can be found on the following github repository: https://github.com/angusleigh/leg_tracker
+
+Additionaly, a conference paper can be found in the leg_tracker package. For the sake of completion, we stated the paper on this page again: 
+
+Leigh, Angus. Person Tracking and Following with 2D Laser Scanners. IEEE International Conference on Robotics and Automation. Seattle, 2015.
 
 Requirements:
 --------------------
