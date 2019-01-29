@@ -5,15 +5,15 @@ branch: human_following
 
 authors: Hao Wang and Ilir Tahiraj
 
-contact: hw19@live.de and ilir.tahiraj@tum.de
+contact: hao.wang@tum.de and ilir.tahiraj@tum.de
 
 ====
 
 Human Following
 ====
-This is a desciption of the human_following repository, which extends the existing tas_group_2 package with the leg_tracker and the human_follower packages.
+This is a description of the human_following repository, which extends the existing tas_group_2 package with the leg_tracker and the human_follower packages.
 
-## Description
+## Description Leg Tracker
 
 This leg tracker package is used to detect human legs and track them in case it is classified as a human. Based on geometric features and using Random Forest Trees as a classification method, leg clusters, obtained from the scan data, are classified as human or non-human. The random forest classifier is trained on 1700 human and 4500 non-human examples. Autonomous tracking of multiple people is performed by a multi-target Kalman Filter. Further, the global nearest neighbor method is used for the data association. 
 
@@ -43,7 +43,7 @@ In order to run the leg_tracker the following packages/installations are require
 
 ## Demonstration
 
-After installing all dependencies and compiling the leg_tracker (catkin_make) it can be run with the command: roslaunch leg_tracker joint_leg_tracker.launch.
+After installing all dependencies and compiling the leg_tracker (catkin_make), it can be run with the command: roslaunch leg_tracker joint_leg_tracker.launch.
 To only work on the leg_tracker there exist three demo files in the launch directory of the leg_tracker
 
 ## Executables
@@ -85,9 +85,15 @@ Human Follower
 
 ## Description Human Follower
 
-This human follower package is used to receive the position of a detected person (see leg detection package above) and pass it as a goal point to the path planner. Additionally, a P-controller is added to to control the distance range between the car and the tracked person. 
+This human follower package is used to receive the position of a detected person (see leg detection package above) and pass it as a goal point to the path planner. Additionally, a P-controller is added to control the distance range between the car and the tracked person. 
 
-The function to compute the human-following velocity is based on the evaluation relationship results presented in the following paper:
+Based on different distances d between detected person and car, the car adapts to different velocities for the following states:
+state 1: if distance d '< 1m, car drives in negative direction of set goal
+state 2: if distance 1m /< d < 2m, car stands still
+state 3: if distance 2m //< d < 4m, car drives with velocity function, which is linear dependent on distance
+state 4: if distance d \\> 4m, car drives with full speed.
+
+The function to compute the velocity following the human for state 3 is based on the evaluation results presented in the following paper, which suggests a linear relationship between distance and velocity:
 
 A. Tomoya et al., A mobile robot for following, watching and detecting falls for elderly care. Procedia Comput. Sci. 112, 1994–2003 (2017)
 (http://www.sciencedirect.com/science/article/pii/S1877050917314825)
@@ -105,24 +111,14 @@ roslaunch human_follower human_follower_node
 
 ## Executables
 
-In the src/ directory, the following executables can be found: 
+In the src/ directory, the executables to the following nodes can be found: 
 
-### human_goal node
-#### goalcontrol/goalcontrol.h
-	
-#### goalcontrol/goalcontrol.cpp
-
-#### human_goal_node_controller.cpp: 
-	This node receives the pose of a tracked person, transforms the coordinates from "base_link" to "map" frame  and publishes them to move_base as new goal.
+#### human_goal_node
+	This node receives the pose of a tracked person, transforms the coordinates from "base_link" to "map" frame  and publishes them to move_base as new goal. The code for this node can be found in goalcontrol/goalcontrol.cpp and human_goal_node_controller.cpp.
 
 
-#### human_follower node
-#### control/control.h
-
-#### control/control.cpp
-
-#### human_follower_node_controller.cpp: 
-	This node receives the pose of a tracked person and the calculated cmd_vel from move_base, and adapts the velocity commands based on the distance of the car to the tracked person with the goal of smooth and safe following.
+#### human_follower_node
+	This node receives the pose of a tracked person and the calculated cmd_vel from move_base, and adapts the velocity commands based on the distance of the car to the tracked person to follow on a safe distance. The code for this can be found in human_follower_node_controller.cpp and control/control.cpp.
 
 
 ## Topics
@@ -147,8 +143,4 @@ Publish:
 #### /cmd_vel2: 
 	The human_follower_node_control node publishes the adapted velocity commands on this topic
 
-
-
-
-	
 
